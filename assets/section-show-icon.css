@@ -1,0 +1,35 @@
+.show-icon {
+  padding: 20px 0;
+}
+
+.show-icon__title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.show-icon__icon-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.show-icon__icon-group svg {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transform: scale(1);
+  transition: 0.2s;
+}
+.show-icon__icon-group svg:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+.show-icon__icon-group svg:hover path {
+  transition: 0.2s;
+  stroke: #5F5BE2;
+  fill: #5F5BE2;
+}
+.show-icon__icon-group svg path {
+  transition: 0.2s;
+}
+
+/*# sourceMappingURL=section-show-icon.css.map */

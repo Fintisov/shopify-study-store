@@ -1,0 +1,83 @@
+{{ "section-show-icon.css" | asset_url | stylesheet_tag }}
+
+<div class="show-icon">
+	<div class="container">
+		<h2 class="title show-icon__title">{{ section.settings.title }}</h2>
+
+		<div class="show-icon__icon-group">
+			{% if section.blocks.size > 0 %}
+				{%- for icon in section.blocks -%}
+					{%- render 'icons-social-group',
+						type_icon: icon.settings.variant_icon
+					-%}
+				{%- endfor -%}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+
+{% schema %}
+{
+	"name": "Show icon",
+	"tag": "section",
+	"class": "section",
+	"settings": [
+		{
+			"type": "inline_richtext",
+			"id": "title",
+			"default": "Title",
+			"label": "Show icon"
+		}
+	],
+	"blocks": [
+		{
+			"name": "icon",
+			"type": "icons",
+			"settings": [
+				{
+					"type": "select",
+					"id": "variant_icon",
+					"label": "Variant icon",
+					"options": [
+						{
+							"value": "tiktok",
+							"label": "tiktok"
+						},
+						{
+							"value": "tumblr",
+							"label": "tumblr"
+						},
+						{
+							"value": "twitter",
+							"label": "twitter"
+						},
+						{
+							"value": "vimeo",
+							"label": "vimeo"
+						},
+						{
+							"value": "youtube",
+							"label": "youtube"
+						},
+						{
+							"value": "zoom",
+							"label": "zoom"
+						},
+						{
+							"value": "default",
+							"label": "select an option"
+						}
+					],
+					"default": "default"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "show icon"
+		}
+	]
+}
+{% endschema %}

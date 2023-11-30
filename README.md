@@ -3,7 +3,7 @@
 <ul>
 <li class="has-line-data" data-line-start="8" data-line-end="9">
 Откроется браузер, нужно будет залогинится, далее в терминале выбрать под каким из партнерских аккаунтов заходим.
-<pre><code class="has-line-data" data-line-start="10" data-line-end="12">shopify login --store https://fintisov1.myshopify.com/</code></pre>
+<pre><code class="has-line-data" data-line-start="10" data-line-end="12">shopify theme dev --store https://fintisov1.myshopify.com</code></pre>
 <hr>
 </li>
 <li class="has-line-data" data-line-start="8" data-line-end="9">
@@ -31,7 +31,7 @@
 </li>
 <li class="has-line-data" data-line-start="8" data-line-end="9">
 Разлогиниваемся, заканчиваем работу со стором.
-<pre><code class="has-line-data" data-line-start="10" data-line-end="12">shopify logout</code></pre>
+<pre><code class="has-line-data" data-line-start="10" data-line-end="12">shopify auth logout</code></pre>
 <hr>
 </li>
 </ul>

@@ -1,0 +1,182 @@
+// ------------------------------------------------
+// ------------ COLOR ------------
+$ui-color-black: #000000;
+$ui-color-white: #ffffff;
+$ui-color-black_main: #242424;
+$ui-color-black_main_light: rgba(36, 36, 36, 0.8);
+$ui-color-orange: #EB7A29;
+$ui-color-orange_dark: #ce6113;
+$ui-color-red: #EB2935;
+$ui-color-beige: #F8F6E7;
+$ui-color-pink_light: #FFDEEA;
+$ui-color-pink_dark: #F1D3CA;
+$ui-color-green_light: #D3EDC7;
+$ui-color-blue_light: #CAD6F1;
+$ui-color-blue_dark: #5F5BE2;
+$ui-color-gray_light: #e8e8e8;
+$ui-color-gray_dark: #484848;
+$ui-color-yellow_light: #F8F3DB;
+$ui-color-green: #d4eec8;
+
+$ui-main-gradient: linear-gradient(104deg, #E8E8E8 0%, #FFDEEA 50%, #CAD6F1 100%);
+// ------------------------------------------------
+// ------------ FONTS ------------
+$ui-font-poppins: "Poppins", sans-serif;
+$ui-font-noto_serif: "Noto Serif", sans-serif;
+$ui-font-bebas_neue_pro: "Bebas Neue Pro", sans-serif;
+
+// ------------------------------------------------
+// ------------ Z-Index ------------
+$ui-index-1: 1; // Для наползающих элементов в блоке
+$ui-index-2: 2; // Для наползающих элементов в блоке
+$ui-index-3: 3; // Для наползающих элементов в блоке
+$ui-index-4: 4; // Для наползающих элементов в блоке
+$ui-index-5: 5; // Для наползающих элементов в блоке
+
+$ui-index-6: 6; // Для затемняющих или блюр масок
+$ui-index-7: 7; // Для сайдбаров
+$ui-index-8: 8; // Для модальных окон
+$ui-index-9: 9; // Для элементов перекрывающих все
+
+
+// ------------------------------------------------
+// ------------ parameters styles ------------
+$ui-transition-default: 0.2s;
+
+
+// ------------------------------------------------
+// ------------ Breakpoints ------------
+$ui-breakpoints-xl: "1200px";
+$ui-breakpoints-xl--min: "1201px";
+
+$ui-breakpoints-lg: "989px";
+$ui-breakpoints-lg--min: "990px";
+
+$ui-breakpoints-md: "749px";
+$ui-breakpoints-md--min: "750px";
+
+$ui-breakpoints-sm: "576px";
+$ui-breakpoints-sm--min: "577px";
+
+// ------------------------------------------------
+// ------------ MIXIN ------------
+
+@use "sass:math";
+
+// Работает только при наведении мышки
+@mixin mouse-device {
+	@media (hover: hover) and (pointer: fine) {
+		@content;
+	}
+}
+
+// Работает только на сенсорных экранах
+@mixin touch-device {
+	@media (hover: none) and (pointer: coarse) {
+		@content;
+	}
+}
+
+// Адаптивный шрифт
+@mixin font-adaptiv($desk-size, $mod-size, $line-height: $desk-size) {
+	$addSize: $desk-size - $mod-size;
+	$addMobSize: $addSize + $addSize * 0.7;
+
+	@media screen and (max-width: $ui-breakpoints-md) {
+		font-size: calc(#{$mod-size + px} + #{$addMobSize} * ((100vw - 375px) / 1920));
+	}
+	@media screen and (min-width: $ui-breakpoints-md) {
+		font-size: calc(#{$mod-size + px} + #{$addSize} * (100vw / 1920));
+	}
+
+	line-height: calc($line-height / $desk-size);
+}
+
+// вычисление lh и задавание fz
+@mixin font($font-size, $line-height) {
+	font-size: $font-size;
+	line-height: math.div($line-height, $font-size);
+}
+
+// Отображение количества строк
+@mixin line-text-hidden($col: 2) {
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: $col; /* количество строк */
+}
+
+// Расстояние от текста до подчеркнутой линии
+@mixin underline-text($under: 4px) {
+	text-decoration-line: underline;
+	text-underline-offset: $under;
+}
+
+// Кастомный скролбар
+@mixin style-scrollbar($width: 10px, $height: 6px) {
+	scrollbar-color: #39c039 transparent;
+	scrollbar-width: thin;
+
+	// style for scrollbar
+	::-webkit-scrollbar {
+		width: $width; /* ширина для вертикального скролла */
+		height: $height; /* высота для горизонтального скролла */
+		background-color: transparent;
+	}
+
+	/* ползунок скроллбара */
+	::-webkit-scrollbar-thumb {
+		background-color: #383838;
+		border-radius: 20px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background-color: rgba(56, 56, 56, 0.42);
+	}
+
+	/* Стрелки */
+
+	::-webkit-scrollbar-button:vertical:start:decrement,
+	::-webkit-scrollbar-button:vertical:end:increment,
+	::-webkit-scrollbar-button:vertical:end:increment,
+	::-webkit-scrollbar-button:horizontal:start:decrement,
+	::-webkit-scrollbar-button:horizontal:end:increment {
+		display: none;
+	}
+}
+
+// Скрыть элемента
+@mixin visibility-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	margin: -1px;
+	padding: 0;
+	border: 0;
+}
+
+//медиа-выражение
+@mixin max-screen($res) {
+	@media screen and (max-width: $res) {
+		@content;
+	}
+}
+
+@mixin min-screen($res) {
+	@media screen and (min-width: $res) {
+		@content;
+	}
+}
+
+// ------------------------------------------------
+
+@mixin main-gradient-text {
+	background: linear-gradient(90deg, #EB2935 12.56%, #AC2ED9 50.48%, #299AEB 89.2%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

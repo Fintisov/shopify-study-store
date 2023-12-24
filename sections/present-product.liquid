@@ -1,0 +1,214 @@
+<link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'">
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{{ "section-present-product.css" | asset_url | stylesheet_tag }}
+
+{%- assign card_product = section.settings.product -%}
+
+<div class="present-product">
+	<div class="container">
+		<div class="present-product__content-wrapper">
+			<div class="pr|esent-product__description">
+				{% if section.settings.title != blank %}
+					<h1>{{ section.settings.title }}</h1>
+				{% endif %}
+
+				{% if section.settings.description != blank %}
+					<p>{{ section.settings.description }}</p>
+				{% endif %}
+			</div>
+
+			<div class="present-product__product-btn-group">
+				<div class="present-product__product-btn">
+					<h2>Variant 1 add to card</h2>
+
+					<button class="button button--secondary js-quick-add-custom"
+									data-product-id="{{ card_product.selected_or_first_available_variant.id }}">
+						Add to card custom
+					</button>
+				</div>
+
+				<div class="present-product__product-btn">
+					<h2>Variant 2 add to card</h2>
+
+					<div class="quick-add no-js-hidden">
+						{%- if card_product.variants.size == 1 -%}
+							<product-form>
+								{%- form 'product',
+									card_product,
+									id: product_form_id,
+									class: 'form',
+									novalidate: 'novalidate',
+									data-type: 'add-to-cart-form'
+								-%}
+									<input
+										type="hidden"
+										name="id"
+										value="{{ card_product.selected_or_first_available_variant.id }}"
+										disabled
+									>
+									<button
+										id="{{ product_form_id }}-submit"
+										type="submit"
+										name="add"
+										class="quick-add__submit button button--full-width button--secondary"
+										aria-haspopup="dialog"
+										aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+										aria-live="polite"
+										data-sold-out-message="true"
+										{% if card_product.selected_or_first_available_variant.available == false %}
+											disabled
+										{% endif %}
+									>
+                    <span>
+                      {%- if card_product.selected_or_first_available_variant.available -%}
+												{{ 'products.product.add_to_cart' | t }}
+											{%- else -%}
+												{{ 'products.product.sold_out' | t }}
+											{%- endif -%}
+                    </span>
+										<span class="sold-out-message hidden">
+                      {{ 'products.product.sold_out' | t }}
+                    </span>
+										<div class="loading-overlay__spinner hidden">
+											<svg
+												aria-hidden="true"
+												focusable="false"
+												role="presentation"
+												class="spinner"
+												viewBox="0 0 66 66"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+											</svg>
+										</div>
+									</button>
+								{%- endform -%}
+							</product-form>
+						{%- else -%}
+							<modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
+								<button
+									id="{{ product_form_id }}-submit"
+									type="submit"
+									name="add"
+									class="quick-add__submit button button--full-width button--secondary"
+									aria-haspopup="dialog"
+									aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+									data-product-url="{{ card_product.url }}"
+								>
+									{{ 'products.product.choose_options' | t }}
+									<div class="loading-overlay__spinner hidden">
+										<svg
+											aria-hidden="true"
+											focusable="false"
+											role="presentation"
+											class="spinner"
+											viewBox="0 0 66 66"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+										</svg>
+									</div>
+								</button>
+							</modal-opener>
+							<quick-add-modal id="QuickAdd-{{ card_product.id }}" class="quick-add-modal">
+								<div
+									role="dialog"
+									aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
+									aria-modal="true"
+									class="quick-add-modal__content global-settings-popup"
+									tabindex="-1"
+								>
+									<button
+										id="ModalClose-{{ card_product.id }}"
+										type="button"
+										class="quick-add-modal__toggle"
+										aria-label="{{ 'accessibility.close' | t }}"
+									>
+										{% render 'icon-close' %}
+									</button>
+									<div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
+								</div>
+							</quick-add-modal>
+						{%- endif -%}
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script type="application/json" id="ProductJSON-{{ product.id }}">
+    {{ product.media | where: 'media_type', 'model' | json }}
+</script>
+
+<script src="{{ 'product-model.js' | asset_url }}" defer></script>
+
+<script>
+	const btn = document.querySelector("#shopify-section-{{ section.id }} .js-quick-add-custom")
+	btn.addEventListener("click", addProductToCard)
+
+	async function addProductToCard() {
+		const obj = {
+			'items': [{
+				'id': `${this.getAttribute("data-product-id")}`,
+				'quantity': 1
+			}]
+		}
+
+		try {
+			await fetch(window.Shopify.routes.root + 'cart/add.js', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(obj)
+			})
+
+			const dataCart = await fetch(window.Shopify.routes.root + 'cart.js', {
+				method: 'GET',
+			}).then(res => res.json())
+
+			console.log(dataCart)
+		} catch (e) {
+			console.log("cart error : ", e);
+		}
+
+
+	}
+</script>
+
+{% schema %}
+{
+	"name": "Present product",
+	"tag": "section",
+	"class": "section",
+	"settings": [
+		{
+			"type": "product",
+			"id": "product",
+			"label": "Product"
+		},
+		{
+			"type": "inline_richtext",
+			"id": "title",
+			"default": "Title",
+			"label": "Title"
+		},
+		{
+			"type": "inline_richtext",
+			"id": "description",
+			"default": "Description",
+			"label": "Description"
+		}
+	],
+	"presets": [
+		{
+			"name": "Present product"
+		}
+	]
+}
+{% endschema %}

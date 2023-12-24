@@ -6,13 +6,9 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
-    },
-		"rich-text-dont-delete": {
-			"type": "rich-text-dont-delete"
-		}
+    }
   },
   "order": [
-    "main",
-		"rich-text-dont-delete"
+    "main"
   ]
 }

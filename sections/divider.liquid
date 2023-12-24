@@ -1,0 +1,96 @@
+{% liquid
+    assign full_width = section.settings.full_width
+    assign divider_height = section.settings.height
+    assign divider_width = section.settings.width
+    assign divider_color = section.settings.color
+    assign pad_top = section.settings.padding_top
+    assign pad_bot = section.settings.padding_bottom
+%}
+{%- capture styles -%}
+    --height-divider: {{ divider_height }}px;
+    --width-divider: {{ divider_width }}%;
+    --bg-color-divider: {{ divider_color }};
+    --pad-top-divider: {{ pad_top }}px;
+    --pad-bot-divider: {{ pad_bot }}px;
+{%- endcapture -%}
+
+{%- assign styles = styles | strip_newlines -%}
+
+{{ 'section-divider.scss.css' | asset_url | stylesheet_tag }}
+
+<div
+    class="divider full_width--{{ full_width }}"
+    style="{{ styles }}"
+>
+    <div class="container">
+        <div class="divider__line"><span class="hidden">line</span></div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Divider",
+    "class": "section-divider",
+    "tag": "section",
+    "settings": [
+        {
+            "type": "color",
+            "id": "color",
+            "label": "Color",
+            "default": "#242424"
+        },
+        {
+            "type": "range",
+            "id": "height",
+            "label": "Height",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "default": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "width",
+            "label": "Width",
+            "min": 40,
+            "max": 100,
+            "step": 10,
+            "default": 100,
+            "unit": "%"
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "label": "Full width",
+            "default": false
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "label": "Padding top",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "default": 36,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "label": "Padding bottom",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "default": 36,
+            "unit": "px"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Divider"
+        }
+    ],
+    "templates": ["page", "product", "collection"]
+}
+{% endschema %}

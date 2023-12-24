@@ -1,0 +1,28 @@
+<div class="container">
+	<div style="max-width: 500px">
+		{% render 'card-product',
+			card_product: section.settings.product,
+			show_vendor: section.settings.show_vendor %}
+	</div>
+</div>
+
+
+{% schema %}
+{
+	"name": "show-product",
+	"tag": "section",
+	"class": "section",
+	"settings": [
+		{
+			"type": "product",
+			"id": "product",
+			"label": "Product"
+		}
+	],
+	"presets": [
+		{
+			"name": "show-product"
+		}
+	]
+}
+{% endschema %}

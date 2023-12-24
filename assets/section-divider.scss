@@ -1,0 +1,24 @@
+.divider {
+  padding-top: calc(0.45 * var(--pad-top-divider));
+  padding-bottom: calc(0.45 * var(--pad-bot-divider));
+}
+
+@media screen and (min-width: 990px) {
+  .divider {
+    padding-top: var(--pad-top-divider);
+    padding-bottom: var(--pad-bot-divider);
+  }
+}
+
+.full_width--true .container {
+  max-width: 100%;
+  width: 100%;
+  padding: 0;
+}
+
+.divider__line {
+  width: var(--width-divider);
+  height: var(--height-divider);
+  background-color: var(--bg-color-divider);
+  margin: auto;
+}
